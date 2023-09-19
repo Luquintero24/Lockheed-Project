@@ -25,8 +25,6 @@ for text, row in data.iterrows():
     txtai_data.append((text, row['FAULT_LINE_TEXT'], None))
 embeddings.index(txtai_data)
 
-print(data["FAULT_LINE_TEXT"][4])
-
 def ULists():
     #Create List of all clusters with size 1
     UList1 = []
@@ -36,7 +34,7 @@ def ULists():
         for r in res:
             #Similarity of 0.5 or more
             if r[1] > 0.5:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) == 1:
             UList1.append(list)
 
@@ -46,7 +44,7 @@ def ULists():
         list= []
         for r in res:
             if r[1] > 0.6:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) == 1:
             UList2.append(list)
 
@@ -56,7 +54,7 @@ def ULists():
         list= []
         for r in res:
             if r[1] > 0.7:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) == 1:
             UList3.append(list)
 
@@ -66,7 +64,7 @@ def ULists():
         list= []
         for r in res:
             if r[1] > 0.8:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) == 1:
             UList4.append(list)
 
@@ -76,7 +74,7 @@ def ULists():
         list= []
         for r in res:
             if r[1] > 0.9:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) == 1:
             UList5.append(list)
             
@@ -96,7 +94,7 @@ def GLists():
         for r in res:
             #Similarity of 0.5 or more
             if r[1] > 0.5:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         #Only add to GList if length is greater than 1
         if len(list) > 1:
             GList1.append(list)
@@ -107,17 +105,17 @@ def GLists():
         list= []
         for r in res:
             if r[1] > 0.6:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) > 1:
             GList2.append(list)
 
     GList3 = []
-    for i in range(0,100):
+    for i in range(0,500):
         res = embeddings.search(data["FAULT_LINE_TEXT"][i], 20)
         list= []
         for r in res:
             if r[1] > 0.7:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) > 1:
             GList3.append(list)
 
@@ -127,7 +125,7 @@ def GLists():
         list= []
         for r in res:
             if r[1] > 0.8:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) > 1:
             GList4.append(list)
 
@@ -137,14 +135,14 @@ def GLists():
         list= []
         for r in res:
             if r[1] > 0.9:
-                list.append(data["FAULT_ID"][i])
+                list.append(data["FAULT_ID"][r[0]])
         if len(list) > 1:
             GList5.append(list)
 
 #Printing Lists for now
     #return(GList1)
-    #eturn(GList2)
-    return(GList3)
+    #return(GList2)
+    print(GList3)
     #return(GList4)
     #return(GList5)
 
@@ -161,4 +159,4 @@ def mech(GList):
                     gen.append(com)
     print(gen)
 
-mech(GLists())
+GLists()
