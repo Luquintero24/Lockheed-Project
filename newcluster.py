@@ -7,6 +7,8 @@ from txtai.pipeline import Similarity
 import numpy as np
 from scipy.cluster.hierarchy import linkage, dendrogram
 import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import fcluster
+
 
 em = Embeddings({"path": "sentence-transformers/nli-mpnet-base-v2"})
 
@@ -92,6 +94,7 @@ plt.ylabel('Distance')
 plt.title('Hierarchial Clustering')
 plt.show()
 
+
 # # Convert the list of lists to a NumPy matrix
 # matrix = np.array(second_elements_list)
 
@@ -106,6 +109,47 @@ plt.show()
 
 
 
+# Cut the dendrogram at a distance of 0.87
+threshold = 0.87
+clusters = fcluster(link, threshold, criterion='distance')
+
+# Create a dictionary to store the clusters
+cluster_dict = {}
+for idx, cluster_id in enumerate(clusters):
+    if cluster_id not in cluster_dict:
+        cluster_dict[cluster_id] = [idx]
+    else:
+        cluster_dict[cluster_id].append(idx)
+
+# Convert the dictionary of clusters into a list of lists
+clustered_data = list(cluster_dict.values())
+
+# # # Print the clustered data
+# # for i, cluster in enumerate(clustered_data):
+# #     print(f"Cluster {i + 1}:")
+# #     for idx in cluster:
+# #         print(f"FAULT_ID: {n['FAULT_ID'][idx]}, FAULT_LINE_TEXT: {n['FAULT_LINE_TEXT'][idx]}")
+# #     print()
+
+print(clustered_data)
+
+# # Cut the dendrogram at a distance of 0.87
+# threshold = 0.87
+# clusters = fcluster(link, threshold, criterion='distance')
+
+# # Create a dictionary to store the clusters
+# cluster_dict = {}
+# for idx, cluster_id in enumerate(clusters):
+#     if cluster_id not in cluster_dict:
+#         cluster_dict[cluster_id] = [n['FAULT_ID'][idx]]
+#     else:
+#         cluster_dict[cluster_id].append(n['FAULT_ID'][idx])
+
+# # Convert the dictionary of clusters into a list of lists
+# clustered_data = list(cluster_dict.values())
+
+# # Print the list of lists containing only FAULT_ID values for each cluster
+# print(clustered_data)
 
 
 
