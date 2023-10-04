@@ -2,6 +2,7 @@
 from txtai.embeddings import Embeddings
 import time
 import json
+import csv
 import pandas as pd
 from txtai.pipeline import Similarity
 import numpy as np
@@ -19,15 +20,16 @@ with open("data.json", "r") as f:
 
 # Filter out duplicates
 data.drop_duplicates(subset='FAULT_ID', inplace=True, keep="first")
+data = data.dropna(subset=['FAULT_ID'])
 # Reset indexes to not break the range functions later on
 data.reset_index(drop=True, inplace=True)
-
+data['FAULT_ID'] = data['FAULT_ID'].astype(int)
 em.index(data)
 
 
 
 
-n = data[['FAULT_ID','FAULT_LINE_TEXT']][:10]
+n = data[['FAULT_ID','FAULT_LINE_TEXT']][:50]
 
 # i = 0
 
@@ -73,7 +75,7 @@ sorted_list = []
 i = 0  # Initialize i
 sort = []  # Initialize an empty list for sorting results
 
-while i < 10:
+while i < 50:
     if i < len(n["FAULT_LINE_TEXT"]):  # Check if i is within bounds
         res = em.similarity(n["FAULT_LINE_TEXT"][i], n["FAULT_LINE_TEXT"])
         sorted_res = sorted(res, key=lambda x: x[0])  # Sort the results
@@ -81,6 +83,8 @@ while i < 10:
         sort.append(second_elements)  # Append the second elements to the list
     
     i = i + 1  # Increment i
+    #Output progress
+    print(i)
 
 # Convert 'sort' into a NumPy array to create a matrix
 matrix = np.array(sort)
@@ -88,7 +92,8 @@ matrix = np.array(sort)
 link = linkage(matrix, method = 'complete')
 
 #Create dendrogram
-dendrogram(link, labels=['0','1','2', '3', '4', '5','6','7', '8', '9'])
+l = [str(i) for i in range(len(n))]
+dendrogram(link, labels=l)
 plt.xlabel('Indexes')
 plt.ylabel('Distance')
 plt.title('Hierarchial Clustering')
@@ -110,7 +115,7 @@ plt.show()
 
 
 # Cut the dendrogram at a distance of 0.87
-threshold = 0.87
+threshold = 0.9
 clusters = fcluster(link, threshold, criterion='distance')
 
 # Create a dictionary to store the clusters
@@ -122,8 +127,7 @@ for idx, cluster_id in enumerate(clusters):
         cluster_dict[cluster_id].append(idx)
 
 # Convert the dictionary of clusters into a list of lists
-clustered_data = list(cluster_dict.values())
-
+clustered_indexes = list(cluster_dict.values())
 # # # Print the clustered data
 # # for i, cluster in enumerate(clustered_data):
 # #     print(f"Cluster {i + 1}:")
@@ -131,7 +135,15 @@ clustered_data = list(cluster_dict.values())
 # #         print(f"FAULT_ID: {n['FAULT_ID'][idx]}, FAULT_LINE_TEXT: {n['FAULT_LINE_TEXT'][idx]}")
 # #     print()
 
-print(clustered_data)
+clustered_data = [[n.at[index, 'FAULT_ID'] for index in sublist] for sublist in clustered_indexes]
+
+csv_file = "first_clusters"
+
+with open(csv_file, mode = 'w', newline='') as file:
+    writer = csv.writer(file)
+    for sublist in clustered_data:
+        writer.writerow(sublist)
+print("File Created")
 
 # # Cut the dendrogram at a distance of 0.87
 # threshold = 0.87
