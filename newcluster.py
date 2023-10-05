@@ -29,7 +29,7 @@ em.index(data)
 
 
 
-n = data[['FAULT_ID','FAULT_LINE_TEXT']][:50]
+n = data[['FAULT_ID','FAULT_LINE_TEXT']]
 
 # i = 0
 
@@ -75,7 +75,7 @@ sorted_list = []
 i = 0  # Initialize i
 sort = []  # Initialize an empty list for sorting results
 
-while i < 50:
+while i < len(n):
     if i < len(n["FAULT_LINE_TEXT"]):  # Check if i is within bounds
         res = em.similarity(n["FAULT_LINE_TEXT"][i], n["FAULT_LINE_TEXT"])
         sorted_res = sorted(res, key=lambda x: x[0])  # Sort the results
@@ -115,7 +115,7 @@ plt.show()
 
 
 # Cut the dendrogram at a distance of 0.87
-threshold = 0.9
+threshold = 0.6
 clusters = fcluster(link, threshold, criterion='distance')
 
 # Create a dictionary to store the clusters
@@ -137,7 +137,7 @@ clustered_indexes = list(cluster_dict.values())
 
 clustered_data = [[n.at[index, 'FAULT_ID'] for index in sublist] for sublist in clustered_indexes]
 
-csv_file = "first_clusters"
+csv_file = "first_clusters_full"
 
 with open(csv_file, mode = 'w', newline='') as file:
     writer = csv.writer(file)
