@@ -137,7 +137,7 @@ clustered_indexes = list(cluster_dict.values())
 
 clustered_data = [[n.at[index, 'FAULT_ID'] for index in sublist] for sublist in clustered_indexes]
 
-csv_file = "first_clusters_full"
+csv_file = "first_clusters_full.csv"
 
 with open(csv_file, mode = 'w', newline='') as file:
     writer = csv.writer(file)
