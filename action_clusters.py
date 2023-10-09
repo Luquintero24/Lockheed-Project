@@ -32,13 +32,15 @@ em.index(data)
 
 #Initialize New Dataframe
 M = pd.DataFrame()
-
+X = pd.DataFrame()
 #Iterate through clusters
 for sublist in first_cluster:
     #If the cluster is alone place it into M immediately
     if len(sublist)==1:
         filtered = data[data['FAULT_ID'] == sublist[0]]
         M = pd.concat([M, filtered], ignore_index=True)
-
-print(M)
+    else:
+        for i in len(sublist):
+            fil = sublist[i]
+            filtered = data[data['FAULT_ID'] == fil]
 
