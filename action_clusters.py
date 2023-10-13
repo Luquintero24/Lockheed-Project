@@ -67,8 +67,6 @@ em.index(data)
 M = pd.DataFrame()
 P = 0
 
-#Only first 10 elements for testing purposes
-first_cluster = first_cluster[:10]
 #print(first_cluster)
 for sublist in first_cluster:
     #Initilize W and Y which serve the same purpose as X and Z
@@ -125,5 +123,11 @@ for sublist in first_cluster:
             madd = madd.to_frame().T
             madd["P"] = P
             M = pd.concat([M, madd], ignore_index=True)
-print(M)
 #Next Step: Turn M into a CSV file
+
+
+csv_file = "Action_Texts.csv"
+M.to_csv(csv_file, index = False)
+print("File Created")
+#Ask about case where subtasks that do not include a remove replace
+#Keep AC_Serial and FAULT_DATE and FAULT_ID but blank them out
