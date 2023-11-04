@@ -1,0 +1,6 @@
+streamlit
+random
+csv
+pandas
+txtai.embeddings
+time
