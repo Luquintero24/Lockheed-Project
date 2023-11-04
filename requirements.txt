@@ -1,6 +1,4 @@
 streamlit==0.75.0
 pandas
-csv>3.10.0
-random
-txtai.embeddings
+txtai
 time
