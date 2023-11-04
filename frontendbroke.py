@@ -20,7 +20,7 @@ option_1 = res[0][0]
 option_2 = res[1][0]
 option_3 = res[2][0] 
 ind= None
-option = st.selectbox('Which one is the best fit',(data["FAULT_LINE_TEXT"][option_1], data["FAULT_LINE_TEXT"][option_2], data["FAULT_LINE_TEXT"][option_3]), index=None)
+option = st.selectbox('Which one is the best fit',(data["FAULT_LINE_TEXT"][option_1], data["FAULT_LINE_TEXT"][option_2], data["FAULT_LINE_TEXT"][option_3]), index=None, placeholder = "Select the Best Fit")
 
 
 if option == data["FAULT_LINE_TEXT"][option_1]:
